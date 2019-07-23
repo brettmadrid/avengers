@@ -1,26 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import { Route } from 'react-router-dom';
+import React from 'react';
+import { Route, NavLink } from 'react-router-dom';
+
 import Home from './components/Home';
-import Avengers from './components/Avengers';
-import avengers from './data';
+import AvengersList from './components/AvengersList';
+import AvengerPage from './components/AvengerPage';
+
+import avengersData from './data';
+
 import './App.css';
 
 function App() {
-
-  const [ avengersData, setAvengersData ] = useState([])
-
-  useEffect(() => {
-    return () => {
-      setAvengersData(avengers)
-    };
-  }, [avengersData])
 
   console.log('avengersData', avengersData)
 
   return (
     <div className="App">
+      <ul className="navbar">
+        <li>
+          <NavLink to="/" activeClassName="activeNavButton">Home</NavLink>
+        </li>
+        <li>
+          <NavLink to="/avengers" activeClassName="activeNavButton">Avengers</NavLink>
+        </li>
+      </ul>
+
       <Route exact path="/" component={Home} />
-      <Route path="/avengers" component={Avengers} />
+
+      <Route 
+        exact path="/avengers" 
+        render={props => <AvengersList {...props} avengers={avengersData} />}
+      />
+
+      <Route 
+        path='/avengers/:id' 
+        render={props => <AvengerPage {...props} avengers={avengersData} />} 
+      />
     </div>
   );
 }
